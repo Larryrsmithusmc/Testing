@@ -1,40 +1,32 @@
 .create-wrap {
   display: flex;
   justify-content: center;
-  align-items: stretch;
-  gap: 35px;                 /* more space between form and box */
+  align-items: center;   /* centers vertically instead of stretching */
+  gap: 35px;
 }
 
 /* FORM SIDE */
 .form-section {
   width: 420px;
-  display: flex;
-  flex-direction: column;
 }
 
 /* ACCOUNT TYPE BOX */
 .account-type-box {
-  width: 160px;              /* narrower box */
+  width: 160px;          /* keep narrow */
+  height: 180px;         /* half the previous stretched height */
   border: 2px solid black;
   padding: 14px 12px;
 
   display: flex;
   flex-direction: column;
-  justify-content: space-between;   /* spreads items top to bottom */
+  justify-content: space-evenly;  /* evenly space radio options */
 }
 
-/* make title sit at top line of form */
+/* Title */
 .account-type-box h3 {
   margin: 0;
   font-size: 16px;
-}
-
-/* wrapper for radio choices */
-.account-options {
-  flex: 1;                       /* fills vertical space */
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly; /* spreads User/Admin options evenly */
+  text-align: center;
 }
 
 .choice {
@@ -44,7 +36,7 @@
   font-size: 15px;
 }
 
-/* buttons */
+/* Buttons */
 .create-actions {
   display: flex;
   gap: 12px;
