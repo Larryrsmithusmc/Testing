@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Create New Account</title>
+  <link rel="stylesheet" href="css/common.css"/>
+  <link rel="stylesheet" href="css/createuser.css"/>
+  <script defer src="js/auth.js"></script>
+</head>
+
+<body data-page="create">
+  <div class="header">
+    <div class="title">Create New Account</div>
+    <a class="Login" href="Login.html">Back to Login</a>
+  </div>
+
+  <div class="main-box">
+    <div class="panel">
+
+      <div class="left-rail">
+        <div class="account-type-box">
+          <h3>Account Type</h3>
+
+          <label class="choice">
+            <input type="radio" name="acctType" value="user" />
+            User
+          </label>
+
+          <label class="choice">
+            <input type="radio" name="acctType" value="groceryadmin" />
+            Grocery Admin
+          </label>
+
+          <label class="choice">
+            <input type="radio" name="acctType" value="admin" />
+            Admin
+          </label>
+        </div>
+      </div>
+
+      <div class="right-form">
+        <form id="createForm">
+          <div class="field">
+            <label for="newUsername">New User Name</label>
+            <input id="newUsername" type="text" autocomplete="username" />
+            <div class="small-note">Exactly 8 lowercase letters</div>
+          </div>
+
+          <div class="field">
+            <label for="newEmail">Email Address</label>
+            <input id="newEmail" type="email" autocomplete="email" />
+          </div>
+
+          <div class="field">
+            <label for="newPassword">Password</label>
+            <input id="newPassword" type="password" autocomplete="new-password" />
+            <div class="small-note">Exactly 12 chars with upper, lower, number, symbol</div>
+          </div>
+
+          <div class="create-actions">
+            <button class="btn" type="submit">Create Account</button>
+            <button id="cancelCreate" class="btn" type="button">Cancel</button>
+          </div>
+
+          <div id="createMsg" class="message"></div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-text">Team Site</div>
+    <a class="team-link" href="Team.html">Visit Team Page</a>
+  </div>
+</body>
+</html>
