@@ -2,35 +2,49 @@
   display: flex;
   justify-content: center;
   align-items: stretch;
-  gap: 20px;
+  gap: 35px;                 /* more space between form and box */
 }
 
+/* FORM SIDE */
 .form-section {
   width: 420px;
+  display: flex;
+  flex-direction: column;
 }
 
+/* ACCOUNT TYPE BOX */
 .account-type-box {
-  width: 200px;
+  width: 160px;              /* narrower box */
   border: 2px solid black;
-  padding: 16px;
+  padding: 14px 12px;
 
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  justify-content: space-between;   /* spreads items top to bottom */
 }
 
+/* make title sit at top line of form */
 .account-type-box h3 {
   margin: 0;
-  font-size: 18px;
+  font-size: 16px;
+}
+
+/* wrapper for radio choices */
+.account-options {
+  flex: 1;                       /* fills vertical space */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly; /* spreads User/Admin options evenly */
 }
 
 .choice {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 16px;
+  font-size: 15px;
 }
 
+/* buttons */
 .create-actions {
   display: flex;
   gap: 12px;
