@@ -1,26 +1,26 @@
 {
   "users": [
     {
-      "username": "userdemo",
-      "password": "Abcdef1!ghIJ",
+      "username": "user1234",
+      "password": "Password123#",
       "type": "user",
-      "email": "userdemo@example.com",
+      "email": "userdemo@abc.com",
       "failedAttempts": 0,
       "locked": false
     },
     {
-      "username": "adminusr",
-      "password": "Admin1!aaaaAA",
+      "username": "admin123",
+      "password": "Password123#",
       "type": "admin",
-      "email": "adminusr@example.com",
+      "email": "adminusr@abc.com",
       "failedAttempts": 0,
       "locked": false
     },
     {
-      "username": "grocerad",
-      "password": "Grocery1!aAaA",
+      "username": "grocer12",
+      "password": "Password123#",
       "type": "groceryadmin",
-      "email": "grocerad@example.com",
+      "email": "groceradmin@abc.com",
       "failedAttempts": 0,
       "locked": false
     }
