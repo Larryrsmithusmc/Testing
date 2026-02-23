@@ -213,9 +213,7 @@ async function initializeCreateUserPage() {
       true
     );
 
-    setTimeout(function () {
-      window.location.href = "Login.html";
-    }, 1000);
+  window.location.href = "Login.html";
   });
 
   document
