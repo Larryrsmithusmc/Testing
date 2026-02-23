@@ -3,6 +3,7 @@
   align-items: center;
   justify-content: center;   /* centers the group */
   gap: 12px;                 /* small gap between button and form */
+  width: fit-content;
 }
 
 /* make left rail hug the form */
