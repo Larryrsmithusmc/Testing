@@ -16,7 +16,6 @@
   padding: 14px 12px;
   display: flex;
   flex-direction: column;
-  margin-top: -25px;   /* moves box up slightly */
 }
 
 /* Title fixed at top */
