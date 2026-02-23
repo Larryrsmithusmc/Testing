@@ -1,0 +1,29 @@
+.account-type-box {
+  width: 80%;
+  height: 80%;
+  border: 2px solid black;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 14px;
+}
+
+.account-type-box h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.choice {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+}
+
+.create-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 10px;
+}
