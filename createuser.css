@@ -5,28 +5,33 @@
   gap: 35px;
 }
 
-/* FORM SIDE */
 .form-section {
   width: 420px;
 }
 
-/* ACCOUNT TYPE BOX */
 .account-type-box {
-  width: 160px;          /* keep narrow */
-  height: 180px;         /* half the previous stretched height */
+  width: 160px;
+  height: 180px;
   border: 2px solid black;
   padding: 14px 12px;
-
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;  /* evenly space radio options */
+  margin-top: -15px;   /* moves box up slightly */
 }
 
-/* Title */
+/* Title fixed at top */
 .account-type-box h3 {
-  margin: 0;
+  margin: 0 0 10px 0;
   font-size: 16px;
   text-align: center;
+}
+
+/* Radio options fill remaining space */
+.account-options {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;  /* evenly distributes 3 options */
 }
 
 .choice {
