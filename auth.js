@@ -212,8 +212,10 @@ async function initializeCreateUserPage() {
       "All validation passed. Backend not connected yet. User not saved.",
       true
     );
-
-  window.location.href = "Login.html";
+    
+    setTimeout(function () {
+      window.location.href = "Login.html";
+     }, 1000); 
   });
 
   document
