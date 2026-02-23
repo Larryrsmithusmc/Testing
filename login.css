@@ -1,0 +1,22 @@
+.login-wrap {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  justify-content: center;
+}
+
+.create-rail-btn {
+  width: 70%;
+  height: 80%;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+}
+
+.login-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
