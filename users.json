@@ -1,0 +1,28 @@
+{
+  "users": [
+    {
+      "username": "userdemo",
+      "password": "Abcdef1!ghIJ",
+      "type": "user",
+      "email": "userdemo@example.com",
+      "failedAttempts": 0,
+      "locked": false
+    },
+    {
+      "username": "adminusr",
+      "password": "Admin1!aaaaAA",
+      "type": "admin",
+      "email": "adminusr@example.com",
+      "failedAttempts": 0,
+      "locked": false
+    },
+    {
+      "username": "grocerad",
+      "password": "Grocery1!aAaA",
+      "type": "groceryadmin",
+      "email": "grocerad@example.com",
+      "failedAttempts": 0,
+      "locked": false
+    }
+  ]
+}
