@@ -1,24 +1,34 @@
 .login-wrap {
   display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  gap: 20px;
+  align-items: center;
+  justify-content: center;   /* centers the group */
+  gap: 12px;                 /* small gap between button and form */
 }
 
-/* Left vertical button */
+/* make left rail hug the form */
 .left-rail {
   display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }
 
+/* vertical create account button */
 .create-rail-btn {
   height: 200px;
-  width: 50px;
+  width: 55px;
   writing-mode: vertical-rl;
   text-orientation: mixed;
   transform: rotate(180deg);
 }
 
-/* FORM CONTAINER */
+/* lock the form width so it stays compact */
 .right-form {
-  width: 500px;   /* controls total form width */
+  width: 420px;
+}
+
+/* center login button under fields */
+.login-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 12px;
 }
