@@ -62,13 +62,10 @@ body {
   text-decoration: none;
 }
 
-/* shared form look */
 .panel {
-  width: 85%;
-  height: 75%;
+  width: 100%;
   display: flex;
-  gap: 30px;
-  align-items: stretch;
+  align-items: center;
   justify-content: center;
 }
 
