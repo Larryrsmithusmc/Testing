@@ -1,202 +1,239 @@
-const STORAGE_KEY = "siteUsers_v1";
+const USER_STORAGE_KEY = "users";
 
-function usernameValid(username) {
+function isValidUsername(username) {
   return /^[a-z]{8}$/.test(username);
 }
 
-function passwordValid(password) {
+function isValidPassword(password) {
   if (password.length !== 12) return false;
-  const hasUpper = /[A-Z]/.test(password);
-  const hasLower = /[a-z]/.test(password);
-  const hasDigit = /[0-9]/.test(password);
-  const hasSymbol = /[^A-Za-z0-9]/.test(password);
-  return hasUpper && hasLower && hasDigit && hasSymbol;
+
+  const containsUppercase = /[A-Z]/.test(password);
+  const containsLowercase = /[a-z]/.test(password);
+  const containsNumber = /[0-9]/.test(password);
+  const containsSymbol = /[^A-Za-z0-9]/.test(password);
+
+  return (
+    containsUppercase &&
+    containsLowercase &&
+    containsNumber &&
+    containsSymbol
+  );
 }
 
-async function seedUsersIfNeeded() {
-  const existing = localStorage.getItem(STORAGE_KEY);
-  if (existing) return;
+function isValidEmail(email) {
+  if (!email) return true;
+  return /^\S+@\S+\.\S+$/.test(email);
+}
+
+async function loadHardcodedUsersIfNeeded() {
+  if (localStorage.getItem(USER_STORAGE_KEY)) return;
 
   try {
-    const res = await fetch("users.json", { cache: "no-store" });
-    const data = await res.json();
+    const response = await fetch("users.json", { cache: "no-store" });
+    const jsonData = await response.json();
 
-    const map = {};
-    for (const u of (data.users || [])) {
-      map[u.username] = {
-        username: u.username,
-        password: u.password,
-        type: u.type,
-        email: u.email || "",
-        failedAttempts: u.failedAttempts || 0,
-        locked: !!u.locked
+    const usersObject = {};
+
+    (jsonData.users || []).forEach(function (userRecord) {
+      usersObject[userRecord.username] = {
+        username: userRecord.username,
+        password: userRecord.password,
+        accountType: userRecord.type,
+        email: userRecord.email || "",
+        failedLoginAttempts: 0,
+        isLocked: false
       };
-    }
+    });
 
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(map));
-  } catch (e) {
-    // If users.json fails to load, still initialize an empty store
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({}));
+    localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(usersObject));
+  } catch {
+    localStorage.setItem(USER_STORAGE_KEY, JSON.stringify({}));
   }
 }
 
-function getUsers() {
-  const raw = localStorage.getItem(STORAGE_KEY);
-  return raw ? JSON.parse(raw) : {};
+function getStoredUsers() {
+  return JSON.parse(localStorage.getItem(USER_STORAGE_KEY) || "{}");
 }
 
-function setUsers(usersObj) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(usersObj));
+function saveStoredUsers(usersObject) {
+  localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(usersObject));
 }
 
-function setMessage(el, msg, ok = false) {
-  if (!el) return;
-  el.textContent = msg;
-  el.style.color = ok ? "green" : "#b00000";
+function displayMessage(element, text, isSuccess = false) {
+  element.textContent = text;
+  element.style.color = isSuccess ? "green" : "#b00000";
 }
 
-function redirectByType(type) {
-  if (type === "user") window.location.href = "UserMainPage.html";
-  else if (type === "admin") window.location.href = "AdminMainPage.html";
-  else if (type === "groceryadmin") window.location.href = "GroceryAdminMainPage.html";
-  else window.location.href = "Login.html";
+function redirectToAccountPage(accountType) {
+  if (accountType === "user") {
+    window.location.href = "UserMainPage.html";
+  }
+
+  if (accountType === "admin") {
+    window.location.href = "AdminMainPage.html";
+  }
+
+  if (accountType === "groceryadmin") {
+    window.location.href = "GroceryAdminMainPage.html";
+  }
 }
 
-/* ---------- Login page ---------- */
-async function initLoginPage() {
-  await seedUsersIfNeeded();
+async function initializeLoginPage() {
+  await loadHardcodedUsersIfNeeded();
 
-  const form = document.getElementById("loginForm");
-  const msg = document.getElementById("loginMsg");
-  const createBtn = document.getElementById("goCreateAccount");
+  const loginForm = document.getElementById("loginForm");
+  const loginMessageElement = document.getElementById("loginMsg");
 
-  createBtn?.addEventListener("click", () => {
-    window.location.href = "CreateUser.html";
-  });
+  loginForm?.addEventListener("submit", function (event) {
+    event.preventDefault();
 
-  form?.addEventListener("submit", (e) => {
-    e.preventDefault();
+    const enteredUsername =
+      document.getElementById("loginUsername").value.trim();
+    const enteredPassword =
+      document.getElementById("loginPassword").value;
 
-    const username = (document.getElementById("loginUsername").value || "").trim();
-    const password = document.getElementById("loginPassword").value || "";
+    const usersObject = getStoredUsers();
+    const matchingUser = usersObject[enteredUsername];
 
-    const users = getUsers();
-    const record = users[username];
-
-    if (!record) {
-      setMessage(msg, "Invalid username or password.");
+    if (!matchingUser) {
+      displayMessage(loginMessageElement, "Invalid username or password.");
       return;
     }
 
-    if (record.locked) {
-      setMessage(msg, "Account locked after 3 incorrect login attempts.");
-      return;
-    }
-
-    if (record.password === password) {
-      record.failedAttempts = 0;
-      users[username] = record;
-      setUsers(users);
-
-      sessionStorage.setItem("currentUser", username);
-      sessionStorage.setItem("currentType", record.type);
-
-      redirectByType(record.type);
-      return;
-    }
-
-    record.failedAttempts = (record.failedAttempts || 0) + 1;
-
-    if (record.failedAttempts >= 3) {
-      record.locked = true;
-      users[username] = record;
-      setUsers(users);
-      setMessage(msg, "Account locked after 3 incorrect login attempts.");
-      return;
-    }
-
-    users[username] = record;
-    setUsers(users);
-
-    const left = 3 - record.failedAttempts;
-    setMessage(msg, `Invalid username or password. Attempts left: ${left}`);
-  });
-}
-
-/* ---------- Create account page ---------- */
-async function initCreateUserPage() {
-  await seedUsersIfNeeded();
-
-  const form = document.getElementById("createForm");
-  const msg = document.getElementById("createMsg");
-
-  form?.addEventListener("submit", (e) => {
-    e.preventDefault();
-
-    const username = (document.getElementById("newUsername").value || "").trim();
-    const email = (document.getElementById("newEmail").value || "").trim();
-    const password = document.getElementById("newPassword").value || "";
-
-    const type = document.querySelector("input[name='acctType']:checked")?.value;
-
-    if (!type) {
-      setMessage(msg, "Choose an account type.");
-      return;
-    }
-
-    if (!usernameValid(username)) {
-      setMessage(msg, "Username must be exactly 8 characters and only lowercase letters.");
-      return;
-    }
-
-    if (!passwordValid(password)) {
-      setMessage(
-        msg,
-        "Password must be exactly 12 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 symbol."
+    if (matchingUser.isLocked) {
+      displayMessage(
+        loginMessageElement,
+        "Account locked after 3 incorrect login attempts."
       );
       return;
     }
 
-    // Optional email check (basic)
-    if (email.length > 0 && !/^\S+@\S+\.\S+$/.test(email)) {
-      setMessage(msg, "Email address is not valid.");
+    if (matchingUser.password === enteredPassword) {
+      matchingUser.failedLoginAttempts = 0;
+      saveStoredUsers(usersObject);
+      redirectToAccountPage(matchingUser.accountType);
       return;
     }
 
-    const users = getUsers();
+    matchingUser.failedLoginAttempts += 1;
 
-    if (users[username]) {
-      setMessage(msg, "That username already exists.");
-      return;
+    if (matchingUser.failedLoginAttempts >= 3) {
+      matchingUser.isLocked = true;
+      displayMessage(
+        loginMessageElement,
+        "Account locked after 3 incorrect login attempts."
+      );
+    } else {
+      const attemptsRemaining = 3 - matchingUser.failedLoginAttempts;
+      displayMessage(
+        loginMessageElement,
+        `Invalid username or password. Attempts left: ${attemptsRemaining}`
+      );
     }
 
-    users[username] = {
-      username,
-      password,
-      type,
-      email,
-      failedAttempts: 0,
-      locked: false
-    };
-
-    setUsers(users);
-    setMessage(msg, "Account created. Returning to login...", true);
-
-    setTimeout(() => {
-      window.location.href = "Login.html";
-    }, 900);
+    saveStoredUsers(usersObject);
   });
 
-  const cancelBtn = document.getElementById("cancelCreate");
-  cancelBtn?.addEventListener("click", () => {
-    window.location.href = "Login.html";
-  });
+  document
+    .getElementById("goCreateAccount")
+    ?.addEventListener("click", function () {
+      window.location.href = "CreateUser.html";
+    });
 }
 
-/* ---------- Page router ---------- */
-document.addEventListener("DOMContentLoaded", () => {
-  const page = document.body?.dataset?.page;
+async function initializeCreateUserPage() {
+  await loadHardcodedUsersIfNeeded();
 
-  if (page === "login") initLoginPage();
-  if (page === "create") initCreateUserPage();
-});
+  const createUserForm = document.getElementById("createForm");
+  const createUserMessageElement =
+    document.getElementById("createMsg");
+
+  createUserForm?.addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    const enteredUsername =
+      document.getElementById("newUsername").value.trim();
+    const enteredEmail =
+      document.getElementById("newEmail").value.trim();
+    const enteredPassword =
+      document.getElementById("newPassword").value;
+
+    const selectedAccountType =
+      document.querySelector("input[name='acctType']:checked")?.value;
+
+    if (!selectedAccountType) {
+      displayMessage(createUserMessageElement, "Choose an account type.");
+      return;
+    }
+
+    if (!isValidUsername(enteredUsername)) {
+      displayMessage(
+        createUserMessageElement,
+        "Username must be exactly 8 lowercase letters."
+      );
+      return;
+    }
+
+    if (!isValidPassword(enteredPassword)) {
+      displayMessage(
+        createUserMessageElement,
+        "Password must be exactly 12 characters with upper, lower, number, and symbol."
+      );
+      return;
+    }
+
+    if (!isValidEmail(enteredEmail)) {
+      displayMessage(
+        createUserMessageElement,
+        "Email address is not valid."
+      );
+      return;
+    }
+
+    const usersObject = getStoredUsers();
+
+    if (usersObject[enteredUsername]) {
+      displayMessage(
+        createUserMessageElement,
+        "That username already exists."
+      );
+      return;
+    }
+
+    /* ===============================
+       BACKEND PLACEHOLDER
+       Future:
+       - Send user data to server
+       - Server saves user permanently
+    =============================== */
+
+    displayMessage(
+      createUserMessageElement,
+      "All validation passed. Backend not connected yet. User not saved.",
+      true
+    );
+
+    setTimeout(function () {
+      window.location.href = "Login.html";
+    }, 1000);
+  });
+
+  document
+    .getElementById("cancelCreate")
+    ?.addEventListener("click", function () {
+      window.location.href = "Login.html";
+    });
+}
+
+switch (document.body.dataset.page) {
+  case "login":
+    initializeLoginPage();
+    break;
+
+  case "create":
+    initializeCreateUserPage();
+    break;
+
+  default:
+    break;
+}
