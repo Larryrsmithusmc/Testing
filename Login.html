@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login</title>
+  <link rel="stylesheet" href="css/common.css"/>
+  <link rel="stylesheet" href="css/login.css"/>
+  <script defer src="js/auth.js"></script>
+</head>
+
+<body data-page="login">
+  <div class="header">
+    <div class="title">Login</div>
+  </div>
+
+  <div class="main-box">
+    <div class="panel login-wrap">
+
+      <div class="left-rail">
+        <button id="goCreateAccount" class="btn create-rail-btn">Create New Account</button>
+      </div>
+
+      <div class="right-form">
+        <form id="loginForm">
+          <div class="field">
+            <label for="loginUsername">User Name</label>
+            <input id="loginUsername" type="text" autocomplete="username" />
+            <div class="small-note">Exactly 8 lowercase letters</div>
+          </div>
+
+          <div class="field">
+            <label for="loginPassword">Password</label>
+            <input id="loginPassword" type="password" autocomplete="current-password" />
+            <div class="small-note">Exactly 12 chars with upper, lower, number, symbol</div>
+          </div>
+
+          <div class="login-actions">
+            <button class="btn" type="submit">Login</button>
+          </div>
+
+          <div id="loginMsg" class="message"></div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-text">Team Site</div>
+    <a class="team-link" href="Team.html">Visit Team Page</a>
+  </div>
+</body>
+</html>
