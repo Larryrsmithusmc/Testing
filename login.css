@@ -1,33 +1,24 @@
 .login-wrap {
   display: flex;
-  align-items: center;
-  gap: 15px;           /* small space between create button and form */
+  align-items: flex-start;
+  justify-content: center;
+  gap: 20px;
 }
 
-/* keep the left section only as wide as the button */
+/* Left vertical button */
 .left-rail {
-  width: auto;
   display: flex;
-  justify-content: flex-end;
 }
 
-/* vertical button like your sketch, but not huge */
 .create-rail-btn {
-  height: 220px;
+  height: 200px;
   width: 50px;
   writing-mode: vertical-rl;
   text-orientation: mixed;
   transform: rotate(180deg);
 }
 
-/* form takes the rest */
+/* FORM CONTAINER */
 .right-form {
-  flex: 1;
-}
-
-/* center the login button under fields */
-.login-actions {
-  display: flex;
-  justify-content: center;
-  margin-top: 15px;
+  width: 500px;   /* controls total form width */
 }
