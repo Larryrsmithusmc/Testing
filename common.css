@@ -66,29 +66,27 @@ body {
   width: 100%;
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
+/* do NOT set widths here; each page controls layout */
 .left-rail {
-  width: 30%;
   display: flex;
   align-items: center;
-  justify-content: center;
 }
 
 .right-form {
-  width: 55%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 14px;
 }
 
-.field input {
-  width: 100%;        /* fills only the 500px container */
-  height: 36px;
-  border: 2px solid black;
-  padding: 6px 10px;
-  font-size: 14px;
+.field {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .field label {
@@ -97,10 +95,11 @@ body {
 }
 
 .field input {
-  height: 42px;
+  width: 100%;
+  height: 36px;
   border: 2px solid black;
   padding: 6px 10px;
-  font-size: 16px;
+  font-size: 14px;
 }
 
 .small-note {
